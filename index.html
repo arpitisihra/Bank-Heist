@@ -60,13 +60,14 @@
             font-style: italic;
             color: #aaa;
         }
-        #user-id-display {
+        /* #user-id-display is now hidden */
+        /* #user-id-display {
             text-align: center;
             margin-top: 1rem;
             font-size: 0.8rem;
             color: #777;
-            word-break: break-all; /* Ensure long IDs wrap */
-        }
+            word-break: break-all;
+        } */
     </style>
 </head>
 <body>
@@ -74,7 +75,8 @@
     <div id="story">Loading story...</div>
     <div class="choices" id="choices"></div>
     <div id="loading-message"></div>
-    <div id="user-id-display"></div>
+    <!-- Removed the user ID display div -->
+    <!-- <div id="user-id-display"></div> -->
 
     <script type="module">
         // Import Firebase modules for Firestore and Authentication
@@ -345,7 +347,7 @@
         const storyDiv = document.getElementById("story");
         const choicesDiv = document.getElementById("choices");
         const loadingMessageDiv = document.getElementById("loading-message");
-        const userIdDisplay = document.getElementById("user-id-display");
+        // const userIdDisplay = document.getElementById("user-id-display"); // Commented out
 
         /**
          * Initializes Firebase and authenticates the user.
@@ -366,7 +368,7 @@
                     if (user) {
                         // User is signed in
                         userId = user.uid;
-                        userIdDisplay.innerText = `User ID: ${userId}`;
+                        // userIdDisplay.innerText = `User ID: ${userId}`; // Commented out
                         isAuthReady = true;
                         console.log("Firebase initialized and user authenticated:", userId);
                         // Add a small delay before initial logs/display
@@ -381,7 +383,7 @@
                         try {
                             const anonymousUser = await signInAnonymously(auth);
                             userId = anonymousUser.user.uid;
-                            userIdDisplay.innerText = `User ID (Anonymous): ${userId}`;
+                            // userIdDisplay.innerText = `User ID (Anonymous): ${userId}`; // Commented out
                             isAuthReady = true;
                             console.log("Firebase initialized and signed in anonymously:", userId);
                             setTimeout(async () => {
@@ -393,7 +395,7 @@
                         } catch (anonError) {
                             console.error("Error signing in anonymously:", anonError);
                             userId = crypto.randomUUID(); // Fallback to random UUID if anonymous sign-in also fails
-                            userIdDisplay.innerText = `User ID (Fallback): ${userId}`;
+                            // userIdDisplay.innerText = `User ID (Fallback): ${userId}`; // Commented out
                             isAuthReady = true;
                             setTimeout(async () => {
                                 if (steps.length > 0) {
@@ -493,7 +495,7 @@
             }
 
             currentStepId = stepId;
-            await logStep(stepId); // Log the step visit
+            await logStep(stepId); // Log the step visit and update last active time
 
             storyDiv.innerText = step.text;
             choicesDiv.innerHTML = ""; // Clear previous choices
@@ -553,7 +555,8 @@
                 // Path: /artifacts/{appId}/users/{userId}/sessions/{sessionId}
                 const sessionDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/sessions`), sessionId);
                 await setDoc(sessionDocRef, {
-                    timestamp: Date.now(),
+                    timestamp: Date.now(), // Initial visit timestamp
+                    lastActive: Date.now(), // Initial last active timestamp
                     userAgent: navigator.userAgent,
                     initialStep: currentStepId
                 });
@@ -565,6 +568,7 @@
 
         /**
          * Logs a step transition to Firestore, incrementing its count.
+         * Also updates the 'lastActive' timestamp for the current session.
          * @param {number} stepId - The ID of the step being visited.
          */
         async function logStep(stepId) {
@@ -577,8 +581,16 @@
                 const stepCountDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/step_counts`), String(stepId));
                 await setDoc(stepCountDocRef, { count: increment(1) }, { merge: true }); // Use merge to update if exists, create if not
                 console.log(`Step ${stepId} logged.`);
+
+                // Update lastActive timestamp for the current session
+                const sessionDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/sessions`), sessionId);
+                await updateDoc(sessionDocRef, {
+                    lastActive: Date.now()
+                });
+                console.log(`Session ${sessionId} lastActive updated.`);
+
             } catch (error) {
-                console.error(`Error logging step ${stepId}:`, error);
+                console.error(`Error logging step ${stepId} or updating session active time:`, error);
             }
         }
 
