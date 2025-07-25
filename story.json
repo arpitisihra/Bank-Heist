@@ -1,0 +1,233 @@
+{
+    "steps": [
+      {
+        "id": 1,
+        "text": "You grip the wheel, engine purring. Smoke rises behind the bank. Your heart pounds. Three masked figures sprint through the haze. They jump in. One throws a duffel into the back. \"Drive.\" No names. No hesitation. You peel out.",
+        "choices": [
+          { "text": "Proceed", "next_step": 2 }
+        ]
+      },
+      {
+        "id": 2,
+        "text": "The getaway car flies down the bypass. Police chatter crackles faintly from a scanner in the glove box. The crew is too quiet. One of them nudges you. \"Next left. Slow.\" You obey. The tires crunch on gravel. You're under a half-finished overpass.",
+        "choices": [
+          { "text": "Proceed", "next_step": 3 }
+        ]
+      },
+      {
+        "id": 3,
+        "text": "Two of them step out. \"We switch here,\" says one, calm as steel. The bag remains. You're stunned. A third man starts to reach for it- \"No time!\" yells the second. They vanish into the darkness. You're left alone. Engine running. Bag full. Sirens rising.",
+        "choices": [
+          { "text": "Proceed", "next_step": 4 }
+        ]
+      },
+      {
+        "id": 4,
+        "text": "A burner phone rings inside the duffel. Unknown number. Do you answer it?",
+        "choices": [
+          { "text": "Answer the call", "next_step": 5 },
+          { "text": "Ignore it and toss the phone into a ditch", "death": "It turns out it was rigged to trace your location. You're caught and arrested." }
+        ]
+      },
+      {
+        "id": 5,
+        "text": "You answer. A modulated voice: \"You're holding something that isn't yours.\" You remain silent. \"You've got two hours to fix this before someone fixes you.\" Click. The line goes dead. The scanner lights up: \"Black sedan spotted near Exit 12.\" That's you.",
+        "choices": [
+          { "text": "Proceed", "next_step": 6 }
+        ]
+      },
+      {
+        "id": 6,
+        "text": "Exit 12 looms ahead. You can keep going straight onto the interstate, or take the off-ramp into the shadows of a closed truck stop. Your gut says someone's watching. Do you...",
+        "choices": [
+          { "text": "Take the off-ramp", "next_step": 7 },
+          { "text": "Keep driving on the interstate", "death": "Highway patrol spike strips are ahead. You're arrested." }
+        ]
+      },
+      {
+        "id": 7,
+        "text": "You slide into the abandoned lot. Dozens of rusted semis sit like dead giants. You kill the lights. Step out. Bag in hand. One truck's engine ticks. Still warm. Someone's here. Then movement behind you. Do you...",
+        "choices": [
+          { "text": "Climb into a nearby trailer to hide", "next_step": 8 },
+          { "text": "Pull your gun and turn around", "death": "You're shot by Robber 1. It was an ambush and you're dead." }
+        ]
+      },
+      {
+        "id": 8,
+        "text": "You hold your breath in the dark trailer. Footsteps. Voices. \"They say he's got the bag.\" Robber 2 and a third figure argue outside. Suddenly, the trailer door slams shut. You're locked in. A match lights under the door. Gasoline smell hits your nose. Do you...",
+        "choices": [
+          { "text": "Kick out the back emergency latch", "next_step": 9 },
+          { "text": "Try to reason through the door", "death": "They torch the trailer and you burn to death." }
+        ]
+      },
+      {
+        "id": 9,
+        "text": "You fall out into the cold air, coughing, smoke stinging your eyes. They didn't see you escape. You spot a service tunnel behind the truck lot, barely visible under overgrown vines. A second burner phone rings. Unknown number again. Do you...",
+        "choices": [
+          { "text": "Enter the tunnel and ditch the phone", "next_step": 10 },
+          { "text": "Answer the phone and stand your ground", "death": "The phone was pinged, and SWAT descends on your location. You're arrested." }
+        ]
+      },
+      {
+        "id": 10,
+        "text": "The tunnel's air is thick with mildew and regret. You move deeper, phone crushed underfoot. Above, a police drone buzzes past. You're under the radar for now. Ahead, the tunnel forks: One path leads toward city lights seeping through a grated entrance. The other dips into pitch black, where a maintenance hatch stands ajar. Do you...",
+        "choices": [
+          { "text": "Head toward the city light", "death": "An infrared tripwire triggers a hidden police unit. You're arrested." },
+          { "text": "Crawl through the maintenance hatch", "next_step": 11 }
+        ]
+      },
+      {
+        "id": 11,
+        "text": "You slide into the tight shaft, knees scraping rusted steel. It opens into a forgotten power substation. Dead screens flicker with residual power. A backpack sits on the floor - not yours. Next to it, a cracked photo of a child, and a loaded pistol. Do you...",
+        "choices": [
+          { "text": "Take the backpack and pistol", "next_step": 12 },
+          { "text": "Leave it alone and keep moving", "death": "You trip on a loose cable and are electrocuted." }
+        ]
+      },
+      {
+        "id": 12,
+        "text": "The backpack has water, a fresh hoodie, burner charger - someone prepped for a long hideout. You don the hoodie, switch phones. But a thud echoes in the vents above. Footsteps. You freeze behind a breaker box. A man drops down. Tactical vest. Silenced pistol. Not police. Do you...",
+        "choices": [
+          { "text": "Sneak past while he checks the room", "next_step": 13 },
+          { "text": "Try to confront him with the stolen pistol", "death": "He shoots first, execution-style. You're dead." }
+        ]
+      },
+      {
+        "id": 13,
+        "text": "You slip out through a side duct, emerging near a cable tunnel. The man never saw you. You're now in what looks like an unfinished subway shaft. Your boots crunch on gravel. A spotlight hits you. Voice: \"Hands up! Step forward slowly!\" Could be police. Could be someone worse. Do you...",
+        "choices": [
+          { "text": "Run into the side tunnel", "next_step": 14 },
+          { "text": "Drop the bag and comply", "death": "Cops cuff you and bag the money. You're arrested." }
+        ]
+      },
+      {
+        "id": 14,
+        "text": "You race down the side tunnel. The walls narrow. You leap a small gap in the tracks and duck under a chain. Behind you: shouts. A gunshot. You spot a subway service ladder. Climb, or keep running? Do you...",
+        "choices": [
+          { "text": "Climb the ladder", "next_step": 15 },
+          { "text": "Keep running into the tunnel", "death": "You hit an electrified rail and die instantly." }
+        ]
+      },
+      {
+        "id": 15,
+        "text": "You emerge through a rusted maintenance hatch onto a rooftop. The city glows below, indifferent and endless. Helicopters circle nearby, their spotlights sweeping alleys. You duck behind a rooftop vent, heart pounding. Then the rooftop door creaks open. A figure steps out. Tall. Armed. Black jacket. Same boots as the crew. He scans the roof with purpose. Do you...",
+        "choices": [
+          { "text": "Sneak behind him and push him off the edge", "next_step": 16 },
+          { "text": "Stay still and wait for him to pass", "death": "He spots you and shoots without hesitation. You're dead." }
+        ]
+      },
+      {
+        "id": 16,
+        "text": "You descend the fire escape. Below: a narrow alley slick with oil and neon puddles. You ditch the hoodie. Blend in with a group of drunks spilling out of a bar. Police sirens scream a block away. No one notices you yet.",
+        "choices": [
+          { "text": "Proceed", "next_step": 17 }
+        ]
+      },
+      {
+        "id": 17,
+        "text": "You slip into the bar's grimy bathroom. Lock the door. Drop the bag between your feet. The fluorescent light hums. You stare into the cracked mirror. No blood. No wounds. Just sweat and shaky hands. Your reflection blinks first. Time to move.",
+        "choices": [
+          { "text": "Proceed", "next_step": 18 }
+        ]
+      },
+      {
+        "id": 18,
+        "text": "Back outside. You cut through an alley. A car screeches up-window rolls down. Voice: \"Get in.\" The driver wears a cap pulled low. Looks familiar. Is this a setup? Do you...",
+        "choices": [
+          { "text": "Get in the car", "next_step": 19 },
+          { "text": "Run the other way", "death": "A sniper hits you. The crew was tracking you and you're dead." }
+        ]
+      },
+      {
+        "id": 19,
+        "text": "Inside the car, the man drives fast and quiet. \"I saw your face on a news alert,\" he mutters. \"You're lucky I still owe you.\" He takes you to a basement clinic. He patches up your hands, gives you a clean change of clothes, and a burner without a SIM.",
+        "choices": [
+          { "text": "Proceed", "next_step": 20 }
+        ]
+      },
+      {
+        "id": 20,
+        "text": "You crash for an hour in a backroom of the clinic. When you wake, something's off. A patient in the hallway stares too long. You hear police codes on a walkie. There's a door in the back, or you can bluff your way out the front. Do you...",
+        "choices": [
+          { "text": "Take the back door and sprint across the alley", "next_step": 21 },
+          { "text": "Walk out the front, acting normal", "death": "A waiting patrol recognizes your face. You're arrested." }
+        ]
+      },
+      {
+        "id": 21,
+        "text": "You cut through an alley. A flash - headlights turn on. A van screeches behind you. Crew tags on the side. Sliding door opens. Two masked figures leap out. One holds a cattle prod. They want the bag. Do you...",
+        "choices": [
+          { "text": "Drop the bag and run down the fire escape", "death": "An unmarked car blocks you, and you're cuffed at the bottom. You're arrested." },
+          { "text": "Throw a trash bin to trip them and sprint the other way", "next_step": 22 }
+        ]
+      },
+      {
+        "id": 22,
+        "text": "You scale a fire escape, leap to the next building. Wind in your ears. Bag on your back. Below: chaos. You kick open a rooftop door and descend a spiral staircase. You find yourself in a candlelit room with maps, notes, and surveillance photos of... you. A man steps from the shadows. \"You were never meant to walk away with it.\" Do you...",
+        "choices": [
+          { "text": "Lunge at him with a broken chair leg", "death": "He shoots you mid-move. You're dead." },
+          { "text": "Say nothing and slowly walk toward the door", "next_step": 23 }
+        ]
+      },
+      {
+        "id": 23,
+        "text": "You back out. He doesn't follow. You're in a parking garage now, lit by flickering halogens. A woman blocks your exit. She flashes a badge or a fake one. \"I can make this disappear. You give me the bag, I give you a new name.\" Do you...",
+        "choices": [
+          { "text": "Say yes and hand it over", "death": "She shoots you point blank and takes it anyway. You're dead." },
+          { "text": "Tell her you'll think about it and run", "next_step": 24 }
+        ]
+      },
+      {
+        "id": 24,
+        "text": "You run through the garage. A sedan peels in, tires screeching. Robber 1 is behind the wheel. He's bleeding. Furious. \"You owe me!\" You're trapped between him and a delivery truck. Do you...",
+        "choices": [
+          { "text": "Jump onto the truck and pull yourself in", "next_step": 25 },
+          { "text": "Try to talk him down", "death": "He rams you with the car. You're dead." }
+        ]
+      },
+      {
+        "id": 25,
+        "text": "Inside the delivery truck: cold boxes, shrink-wrap... and blood. There's a body in one of the crates. The crew's cleaning house. You check the truck's dash. Robber 3. Keys in ignition. Route pinned to the windshield: Border crossing. 2:00 AM. You're almost out.",
+        "choices": [
+          { "text": "Proceed", "next_step": 26 }
+        ]
+      },
+      {
+        "id": 26,
+        "text": "The delivery truck rolls through empty backroads. Dust clouds rise behind you. An old checkpoint passes by-abandoned. Then, a car appears. No headlights. Right on your tail. A single flash from its high beams. A signal. Not friendly. Do you...",
+        "choices": [
+          { "text": "Keep driving, slow and steady", "next_step": 27 },
+          { "text": "Pull over, pretend to comply", "death": "Robber 2 walks up and shoots you without a word. You're dead." }
+        ]
+      },
+      {
+        "id": 27,
+        "text": "You veer into a junkyard marked on the truck's route sheet. Empty. Silent. A man in a cap waits by a crushed sedan. He hands you a new ID, passport, fresh clothes. \"You only walk away if you follow instructions,\" he says. Two bags sit between you. Yours. And a decoy. Do you...",
+        "choices": [
+          { "text": "Hand him the real bag and take the fake", "next_step": 28 },
+          { "text": "Shoot him and take the money", "death": "He's an undercover agent, and the yard is surrounded. You're arrested." }
+        ]
+      },
+      {
+        "id": 28,
+        "text": "You drive east, bag beside you. A mile before the border, you abandon the truck and walk across a rocky trail. Time passes. Then a black SUV pulls up. A tall man steps out, holding your fake ID. Doesn't smile. Doesn't blink. Do you...",
+        "choices": [
+          { "text": "Approach and confirm the name", "next_step": 29 },
+          { "text": "Ditch the plan and run for the woods", "death": "A thermal drone finds you in minutes. You're arrested." }
+        ]
+      },
+      {
+        "id": 29,
+        "text": "You walk up, calm but tense. The man checks your face, then your ID. \"Eastbound road. Seven minutes. Don't look back.\" He hands you a set of car keys. Doesn't wait for thanks. But something about his eyes makes you pause. Is this the last trick? Is this man another trap? Do you...",
+        "choices": [
+          { "text": "Accept the keys and walk toward the road", "next_step": 30 },
+          { "text": "Accept the keys and shoot him", "death": "Hidden men in the bushes open fire instantly. You're dead." }
+        ]
+      },
+      {
+        "id": 30,
+        "text": "The highway is empty at sunrise. You walk along the shoulder, dust clinging to your boots. No one follows. No sirens. No shadows. Just you. A new name. A fresh passport. And $2 million in your hand. You don't smile. You just keep walking. YOU SURVIVED.",
+        "choices": []
+      }
+    ]
+  }
