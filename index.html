@@ -79,10 +79,11 @@
     <!-- <div id="user-id-display"></div> -->
 
     <script type="module">
-        // Import Firebase modules for Firestore and Authentication
+        // Import Firebase modules for Firestore, Authentication, AND Analytics
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, updateDoc, increment, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+        import { getAnalytics, logEvent } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js"; // GA4 SDK import
 
         // Global variables for Firebase configuration and app ID
         // These are provided by the Canvas environment
@@ -94,7 +95,8 @@
           projectId: "bank-heist-3dc00",
           storageBucket: "bank-heist-3dc00.firebasestorage.app",
           messagingSenderId: "749759607971",
-          appId: "1:749759607971:web:c3a6edd90fb97ad63dbb16"
+          appId: "1:749759607971:web:c3a6edd90fb97ad63dbb16",
+          measurementId: "G-YOUR_MEASUREMENT_ID" // IMPORTANT: Replace with your actual GA4 Measurement ID (e.g., G-XXXXXXXXXX)
         };
         console.log("Firebase Config loaded:", firebaseConfig); // Log the config
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
@@ -102,8 +104,9 @@
         let app;
         let db;
         let auth;
+        let analytics; // Declare analytics variable
         let userId; // Will store the authenticated user's ID or a random UUID
-        let isAuthReady = false; // Flag to ensure Firestore operations only happen after auth
+        let isAuthReady = false; // Flag to ensure Firebase operations only happen after auth
 
         // Embed the story JSON directly into the JavaScript
         const storyData = {
@@ -347,7 +350,7 @@
         const storyDiv = document.getElementById("story");
         const choicesDiv = document.getElementById("choices");
         const loadingMessageDiv = document.getElementById("loading-message");
-        // const userIdDisplay = document.getElementById("user-id-display"); // Commented out
+        // const userIdDisplay = document.getElementById("user-id-display"); // User ID display div is commented out in HTML
 
         /**
          * Initializes Firebase and authenticates the user.
@@ -360,6 +363,7 @@
                     app = initializeApp(firebaseConfig);
                     db = getFirestore(app);
                     auth = getAuth(app);
+                    analytics = getAnalytics(app); // Initialize Google Analytics
                 }
 
                 // Listen for authentication state changes
@@ -497,6 +501,11 @@
             currentStepId = stepId;
             await logStep(stepId); // Log the step visit and update last active time
 
+            // Check for winning condition
+            if (stepId === 30) {
+                await logWin(); // Log game win event
+            }
+
             storyDiv.innerText = step.text;
             choicesDiv.innerHTML = ""; // Clear previous choices
 
@@ -544,15 +553,27 @@
          */
 
         /**
-         * Logs a new game session visit to Firestore.
+         * Logs a new game session visit to Firestore AND GA4.
          */
         async function logVisit() {
             if (!isAuthReady) {
-                console.warn("Firebase not ready for logVisit.");
+                console.warn("Firebase not ready for logVisit (Firestore/GA4).");
                 return;
             }
             try {
-                // Path: /artifacts/{appId}/users/{userId}/sessions/{sessionId}
+                // Log to GA4
+                if (analytics) {
+                    logEvent(analytics, "game_start", {
+                        game_name: "Half a Heist", // Add a game name parameter for multi-game analytics
+                        user_id: userId,
+                        session_id: sessionId,
+                        initial_step: currentStepId,
+                        user_agent: navigator.userAgent
+                    });
+                    console.log("Game start event logged to GA4.");
+                }
+
+                // Log to Firestore
                 const sessionDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/sessions`), sessionId);
                 await setDoc(sessionDocRef, {
                     timestamp: Date.now(), // Initial visit timestamp
@@ -560,34 +581,45 @@
                     userAgent: navigator.userAgent,
                     initialStep: currentStepId
                 });
-                console.log("Visit logged successfully.");
+                console.log("Visit logged successfully to Firestore.");
+
             } catch (error) {
                 console.error("Error logging visit:", error);
             }
         }
 
         /**
-         * Logs a step transition to Firestore, incrementing its count.
-         * Also updates the 'lastActive' timestamp for the current session.
+         * Logs a step transition to Firestore AND GA4, incrementing its count.
+         * Also updates the 'lastActive' timestamp for the current session in Firestore.
          * @param {number} stepId - The ID of the step being visited.
          */
         async function logStep(stepId) {
             if (!isAuthReady) {
-                console.warn("Firebase not ready for logStep.");
+                console.warn("Firebase not ready for logStep (Firestore/GA4).");
                 return;
             }
             try {
-                // Path: /artifacts/{appId}/users/{userId}/step_counts/{stepId}
+                // Log to GA4
+                if (analytics) {
+                    logEvent(analytics, "step_reached", {
+                        game_name: "Half a Heist",
+                        user_id: userId,
+                        session_id: sessionId,
+                        step_id: String(stepId) // GA4 event parameters are typically strings or numbers
+                    });
+                    console.log(`Step ${stepId} event logged to GA4.`);
+                }
+
+                // Log to Firestore
                 const stepCountDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/step_counts`), String(stepId));
                 await setDoc(stepCountDocRef, { count: increment(1) }, { merge: true }); // Use merge to update if exists, create if not
-                console.log(`Step ${stepId} logged.`);
+                console.log(`Step ${stepId} logged to Firestore.`);
 
-                // Update lastActive timestamp for the current session
                 const sessionDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/sessions`), sessionId);
                 await updateDoc(sessionDocRef, {
                     lastActive: Date.now()
                 });
-                console.log(`Session ${sessionId} lastActive updated.`);
+                console.log(`Session ${sessionId} lastActive updated in Firestore.`);
 
             } catch (error) {
                 console.error(`Error logging step ${stepId} or updating session active time:`, error);
@@ -595,28 +627,62 @@
         }
 
         /**
-         * Logs a death event to Firestore, incrementing its count for the specific step.
+         * Logs a death event to Firestore AND GA4, incrementing its count for the specific step.
          * @param {number} stepId - The ID of the step where the death occurred.
          */
         async function logDeath(stepId) {
             if (!isAuthReady) {
-                console.warn("Firebase not ready for logDeath.");
+                console.warn("Firebase not ready for logDeath (Firestore/GA4).");
                 return;
             }
             try {
-                // Path: /artifacts/{appId}/users/{userId}/death_counts/{stepId}
+                // Log to GA4
+                if (analytics) {
+                    logEvent(analytics, "game_over", {
+                        game_name: "Half a Heist",
+                        user_id: userId,
+                        session_id: sessionId,
+                        outcome: "death",
+                        died_at_step: String(stepId)
+                    });
+                    console.log(`Death at step ${stepId} event logged to GA4.`);
+                }
+
+                // Log to Firestore
                 const deathCountDocRef = doc(collection(db, `artifacts/${appId}/users/${userId}/death_counts`), String(stepId));
                 await setDoc(deathCountDocRef, { count: increment(1) }, { merge: true }); // Use merge to update if exists, create if not
-                console.log(`Death at step ${stepId} logged.`);
+                console.log(`Death at step ${stepId} logged to Firestore.`);
+
             } catch (error) {
                 console.error(`Error logging death at step ${stepId}:`, error);
+            }
+        }
+
+        /**
+         * Logs a game win event to GA4.
+         */
+        async function logWin() {
+            if (!isAuthReady || !analytics) {
+                console.warn("Firebase Analytics not ready for logWin.");
+                return;
+            }
+            try {
+                logEvent(analytics, "game_won", {
+                    game_name: "Half a Heist",
+                    user_id: userId,
+                    session_id: sessionId,
+                    final_step: "30"
+                });
+                console.log("Game won event logged to GA4.");
+            } catch (error) {
+                console.error("Error logging win:", error);
             }
         }
 
         // Initialize Firebase and load the story when the window loads
         window.onload = async () => {
             await initializeFirebase();
-            await loadStory(); // Changed from fetchStory to loadStory
+            await loadStory();
         };
     </script>
 </body>
